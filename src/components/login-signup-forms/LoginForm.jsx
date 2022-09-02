@@ -3,27 +3,31 @@ import { FormInput } from './FormInput';
 import useFormInput from './useForms';
 
 export const LoginForm = () => {
-	const {email, handleEmailInput, password, handlePasswordInput, handleLogin } =
-		useFormInput();
+	const { state, handleInput, handleLogin, error } = useFormInput();
 
 	return (
 		<div>
 			<h3>Login Form</h3>
-			<FormInput
-				input='email'
-				label='Email:'
-				type='text'
-				value={email}
-				onChange={handleEmailInput}
-			/>
-			<FormInput
-				input='password'
-				label='Password:'
-				type='password'
-				value={password}
-				onChange={handlePasswordInput}
-			/>
-      <button onClick={handleLogin}> Login </button>
+			<form onSubmit={(e) => handleLogin(e)}>
+				{error ? <p> {error.errorMessage} </p> : null}
+				<FormInput
+					input='email'
+					label='Email:'
+					type='email'
+					error={error}
+					value={state}
+					onChange={handleInput}
+				/>
+				<FormInput
+					input='password'
+					label='Password:'
+					type='password'
+					error={error}
+					value={state}
+					onChange={handleInput}
+				/>
+				<button type='submit'> Login </button>
+			</form>
 		</div>
 	);
 };

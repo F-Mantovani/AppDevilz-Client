@@ -2,50 +2,50 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const useFormInput = () => {
-	const [name, setName] = useState('');
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [nameMessage, setNameMessage] = useState(null);
-	const [emailMessage, setEmailMessage] = useState(null);
-	const [passwordMessage, setPasswordMessage] = useState(null);
-	const [message, setMessage] = useState(null);
+	const [state, setState] = useState('');
+	const [error, setError] = useState('');
 	const [success, setSuccess] = useState(false);
 	const [loading, setLoading] = useState(false);
 
-	const handleNameInput = ({ value }) => {
-		setName(value);
-	};
-	const handleEmailInput = ({ value }) => {
-		setEmail(value);
-	};
-	const handlePasswordInput = ({ value }) => {
-		setPassword(value);
+	const handleInput = e => {
+		const { value, name } = e.target;
+		setState(prevState => ({ ...prevState, [name]: value }));
 	};
 
-  const handleLogin = async () => {
-    const user = {
-      name,
-      email,
-      password
-    }
-    const res = await axios.post('http://localhost:9000/auth/login', user)
-    console.log(res.data)
-  }
+	const handleLogin = async e => {
+		e.preventDefault();
+		const user = {
+			name: state.name,
+			email: state.email,
+			password: state.password,
+		};
+		try {
+			checkUserInputs(user);
+			const res = await axios.post('http://localhost:9000/auth/login', user);
+			console.log(res.data);
+		} catch (error) {
+			console.log(error)
+		}
+	};
 
-
+	const checkUserInputs = user => {
+		if (user.email === undefined || user.password === undefined) {
+			setError(prevError => ({ ...prevError, errorMessage: 'Please fill all the information ' }));
+			if (user.email === undefined) {
+				setError(prevError => ({ ...prevError, email: 'Please provide a valid email' }));
+			}
+			if (user.password === undefined) {
+				setError(prevError => ({ ...prevError, password: 'Please provide the password' }));
+			}
+		}
+		throw new Error('Validating user Input');
+	};
 
 	return {
-		name,
-		handleNameInput,
-		email,
-		handleEmailInput,
-		password,
-		handlePasswordInput,
-    handleLogin,
-		nameMessage,
-		emailMessage,
-		passwordMessage,
-		message,
+		state,
+		handleInput,
+		handleLogin,
+		error,
 		success,
 		loading,
 	};
