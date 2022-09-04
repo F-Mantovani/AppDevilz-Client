@@ -1,14 +1,15 @@
 import React from 'react';
 import { FormInput } from './FormInput';
-import useFormInput from './useForms';
+import useFormInput from '../../controllers/useForms';
+import { useAuthFunctions } from '../../controllers/useAuthFunctions';
 
 export const LoginForm = () => {
-	const { state, handleInput, handleLogin, error } = useFormInput();
+	const { state, handleInput } = useFormInput();
+	const { handleLogin, error } = useAuthFunctions()
 
 	return (
 		<div>
 			<h3>Login Form</h3>
-			<form onSubmit={(e) => handleLogin(e)}>
 				{error ? <p> {error.errorMessage} </p> : null}
 				<FormInput
 					input='email'
@@ -26,8 +27,7 @@ export const LoginForm = () => {
 					value={state}
 					onChange={handleInput}
 				/>
-				<button type='submit'> Login </button>
-			</form>
+				<button onClick={() => handleLogin(state)}> Login </button>
 		</div>
 	);
 };
