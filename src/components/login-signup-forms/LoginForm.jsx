@@ -21,7 +21,7 @@ export const LoginForm = () => {
 				/>
 				<FormInput
 					input='password'
-					label='Password:'
+					label='Senha:'
 					type='password'
 					error={error}
 					value={state}

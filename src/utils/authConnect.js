@@ -8,7 +8,7 @@ class authConnect extends connectConstructor {
 	signUp = async credentials => {
 		try {
 			const { data } = await this.api.post('/signup', credentials);
-      console.log(data)
+
 			return data;
 		} catch (error) {
 			throw error.response.data;
