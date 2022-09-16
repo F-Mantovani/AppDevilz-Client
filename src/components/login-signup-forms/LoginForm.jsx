@@ -2,6 +2,11 @@ import React from 'react';
 import { FormInput } from './FormInput';
 import useFormInput from '../../controllers/useForms';
 import { useAuthFunctions } from '../../controllers/useAuthFunctions';
+import styled from 'styled-components'
+
+const h3S = styled.h3`
+	background-color: red
+`
 
 export const LoginForm = () => {
 	const { state, handleInput } = useFormInput();
@@ -9,7 +14,7 @@ export const LoginForm = () => {
 
 	return (
 		<div>
-			<h3>Login Form</h3>
+			<h3S>Login Form</h3S>
 				{error ? <p> {error.errorMessage} </p> : null}
 				<FormInput
 					input='email'
